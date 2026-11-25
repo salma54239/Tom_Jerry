@@ -1,77 +1,97 @@
 public abstract class Personnage {
     protected String Nom;
-    protected int PointsDeVie;
+    protected int PointsDeVieMax;
     protected int xPosition;
     protected int yPosition;
-    Personnage(String nom, int pointsDeVie) {
-        if (nom == null) {
-            System.out.print("Le nom ne peut pas être null.");
-        }
-        if (pointsDeVie < 0) {
-             System.out.print("Les points de vie ne peuvent pas être négatifs.");
-        }
-        public void deplacer(int dx, int dy) {
-            xPosition += dx;
-            yPosition += dy;
+    protected int PointsDeVie;
+
+    public Personnage(String p_nom, int p_pointsDeVieMax, int p_xPosition, int p_yPosition) {
+
+        if (p_nom == null || p_nom.isEmpty()) {
+            throw new IllegalArgumentException("Le nom ne peut pas être vide.");
         }
 
-    public void subirDegats(int degats) {
-        if (degats > 0) {
-            pointsDeVie = Math.max(0, pointsDeVie - degats);
+        if (p_pointsDeVieMax < 0) {
+            throw new IllegalArgumentException("Les points de vie max ne peuvent pas être négatifs.");
         }
-    }
 
-    public void soigner(int soin) {
-        if (soin > 0 && estVivant()) {
-            pointsDeVie = (int) Math.min(Integer.MAX_VALUE, (long) pointsDeVie + soin);
-        }
-    }
-
-    public boolean estVivant() {
-        return pointsDeVie > 0;
-    }
-
-    public abstract void attaquer(Personnage cible);
-
-        this.nom = nom;
-        this.pointsDeVie = pointsDeVie;
-public Personnage(String p_nom, int p_pointsDeVie, int p_xPosition, int p_yPosition) {
         this.Nom = p_nom;
-        this.PointsDeVie = p_pointsDeVie;
+        this.PointsDeVieMax = p_pointsDeVieMax;
+        this.PointsDeVie = p_pointsDeVieMax;
         this.xPosition = p_xPosition;
         this.yPosition = p_yPosition;
     }
 
-    public String getNom() {
-        return Nom;
+    public void deplacer(int p_dx, int p_dy) {
+        xPosition += p_dx;
+        yPosition += p_dy;
     }
 
-    public void setNom(String p_nom) {
-        Nom = p_nom;
+    public void subirDegats(int p_degats) {
+        if (p_degats > 0) {
+            PointsDeVie = PointsDeVie - p_degats;
+
+            if (PointsDeVie < 0) {
+                PointsDeVie = 0;
+            };
+        }
+    }
+
+    public void soigner(int p_soin) {
+        if (p_soin > 0 && estVivant()) {
+            PointsDeVie = PointsDeVie + p_soin;
+            if (PointsDeVie > PointsDeVieMax) {
+                PointsDeVie = PointsDeVieMax;
+            }
+        }
+    }
+
+    public boolean estVivant() {
+        return PointsDeVie > 0;
+    }
+
+    public abstract void attaquer(Personnage cible);
+
+    public String getNom() {
+        return Nom;
     }
 
     public int getPointsDeVie() {
         return PointsDeVie;
     }
 
-    public void setPointsDeVie(int p_pointsDeVie) {
-        PointsDeVie = p_pointsDeVie;
+    public int getPointsDeVieMax() {
+        return PointsDeVieMax;
     }
 
-    public int getxPosition() {
+    public int getXPosition() {
         return xPosition;
     }
 
-    public void setxPosition(int p_xPosition) {
-        this.xPosition = p_xPosition;
-    }
-
-    public int getyPosition() {
+    public int getYPosition() {
         return yPosition;
     }
 
-    public void setyPosition(int p_yPosition) {
-        this.yPosition = p_yPosition;
-    }  
-    
+    // Setters
+    public void setNom(String nom) {
+        if (nom == null || nom.isEmpty()) {
+            throw new IllegalArgumentException("Nom invalide.");
+        }
+        this.Nom = nom;
+    }
+
+    public void setPointsDeVie(int pointsDeVie) {
+        if (pointsDeVie < 0) {
+            throw new IllegalArgumentException("Points de vie invalides.");
+        }
+        this.PointsDeVie = pointsDeVie;
+    }
+
+    public void setXPosition(int xPosition) {
+        this.xPosition = xPosition;
+    }
+
+    public void setYPosition(int yPosition) {
+        this.yPosition = yPosition;
+    }
 }
