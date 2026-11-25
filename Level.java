@@ -98,7 +98,7 @@ public class Level {
         Element e = getElement(s.getxPosition(), s.getyPosition());
         if (e != null) {
             e.interagir(s);
-            if (e instanceof Cle) {
+            if (e instanceof Cle || e instanceof Fromage || e instanceof Piege) {
                 removeElement(e);
             }
         }
@@ -140,46 +140,61 @@ public class Level {
         System.out.println("Points de vie : " + s.getPointsDeVie() + "   Cles : " + s.getCles());
     }
 
-    // Met des murs sur tout le bord de la carte
-    private void entourerDeMurs(){
-        for (int x = 0; x < width; x++) {
-            ajouterElement(new Mur(x, 0));
-            ajouterElement(new Mur(x, heigth - 1));
+    // Construit les murs et la porte à partir d'un plan en texte
+    private void construireDepuisPlan(String[] plan, int clesRequises){
+        for (int y = 0; y < plan.length; y++) {
+            for (int x = 0; x < plan[y].length(); x++) {
+                char c = plan[y].charAt(x);
+                if (c == '#') {
+                    ajouterElement(new Mur(x, y));
+                } else if (c == 'P') {
+                    ajouterElement(new Porte(x, y, clesRequises));
+                }
+            }
         }
-        for (int y = 1; y < heigth - 1; y++) {
-            ajouterElement(new Mur(0, y));
-            ajouterElement(new Mur(width - 1, y));
-        }
-    }
-
-    // Remplace le mur à la position de la porte par la porte
-    private void placerPorte(Porte p){
-        Element mur = getElement(p.getX(), p.getY());
-        if (mur != null) {
-            removeElement(mur);
-        }
-        ajouterElement(p);
     }
 
     // Level 1 : 3 clés au hasard
     public static Level creerLevel1(Random r){
+        String[] plan = {
+            "##########",
+            "#........#",
+            "#.##.###.#",
+            "#.#....#.#",
+            "#.#.##.#.#",
+            "#...#..#.#",
+            "###.#.##.#",
+            "#...#....#",
+            "#.#####..P",
+            "##########"
+        };
         Level l = new Level(1, 10, 10);
         l.setDepart(1, 1);
-        l.entourerDeMurs();
-        l.placerPorte(new Porte(9, 8, 3));
+        l.construireDepuisPlan(plan, 3);
         for (int i = 0; i < 3; i++) {
             l.placerAuHasard(new Cle(0, 0), r);
         }
         return l;
     }
 
-    /*
+    
     // Level 2 : 5 pièges et 3 fromages au hasard, la porte est ouverte
     public static Level creerLevel2(Random r){
+        String[] plan = {
+            "############",
+            "#......#...#",
+            "#.####.#.#.#",
+            "#.#....#.#.#",
+            "#.#.####.#.#",
+            "#.#......#.#",
+            "#.####.###.#",
+            "#......#...#",
+            "#.####...#.P",
+            "############"
+        };
         Level l = new Level(2, 12, 10);
         l.setDepart(1, 1);
-        l.entourerDeMurs();
-        l.placerPorte(new Porte(11, 8, 0));
+        l.construireDepuisPlan(plan, 0);
         for (int i = 0; i < 5; i++) {
             l.placerAuHasard(new Piege(0, 0, 1), r);
         }
@@ -190,18 +205,28 @@ public class Level {
     }
 
     // Crée le combat entre la souris et le chat du level
-    public Combat lancerCombat(Souris s){
-        return new Combat(s, chat);
-    }
-
+    // public Combat lancerCombat(Souris s){
+    //     return new Combat(s, chat);
+    // }
+    /*
     // Level 3 : le chat garde la dernière porte
     public static Level creerLevel3(Random r){
+        String[] plan = {
+            "##########",
+            "#........#",
+            "#.######.#",
+            "#.#......#",
+            "#.#.####.#",
+            "#...#....#",
+            "###.#.####",
+            "#...#....#",
+            "#.###.#..P",
+            "##########"
+        };
         Level l = new Level(3, 10, 10);
         l.setDepart(1, 1);
-        l.entourerDeMurs();
-        l.placerPorte(new Porte(9, 8, 0));
-        Chat c = new Chat("Tom", 10, 8, 8);
-        l.setChat(c);
+        l.construireDepuisPlan(plan, 0);
+        l.setChat(new Chat("Tom", 10, 8, 8));
         return l;
     }
     */

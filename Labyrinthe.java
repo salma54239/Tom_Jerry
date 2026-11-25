@@ -16,7 +16,7 @@ public class Labyrinthe {
         this.random = random;
         this.souris = new Souris("Jerry", 5, 0, 0, 0);
         niveaux.add(Level.creerLevel1(random));
-        // niveaux.add(Level.creerLevel2(random));
+        niveaux.add(Level.creerLevel2(random));
         // niveaux.add(Level.creerLevel3(random));
         this.actuellevel = 0;
         getLevelActuel().ajouterSouris(souris);

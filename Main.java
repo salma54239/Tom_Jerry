@@ -64,12 +64,27 @@ public class Main extends JPanel {
         for (int y = 0; y < level.getHeight(); y++) {
             for (int x = 0; x < level.getWidth(); x++) {
                 Element e = level.getElement(x, y);
-                if (e instanceof Mur) g.setColor(new Color(60, 60, 70));
-                else if (e instanceof Porte) g.setColor(new Color(150, 90, 40));
+                if (e instanceof Mur) 
+                    g.setColor(new Color(60, 60, 70));
+                else if (e instanceof Porte) 
+                    g.setColor(new Color(150, 90, 40));
                 else g.setColor(new Color(235, 230, 215));
                 g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
                 g.setColor(new Color(200, 195, 180));
                 g.drawRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+
+                if (e instanceof Cle) {
+                    g.setColor(new Color(230, 180, 20));
+                    g.fillOval(x * TAILLE + 15, y * TAILLE + 15, 20, 20);
+                }
+                if (e instanceof Piege) {
+                    g.setColor(new Color(200, 50, 50));
+                    g.fillRect(x * TAILLE + 15, y * TAILLE + 15, 20, 20);
+                }
+                if (e instanceof Fromage) {
+                    g.setColor(new Color(250, 210, 60));
+                    g.fillRect(x * TAILLE + 12, y * TAILLE + 18, 26, 16);
+                }
 
                 if (e instanceof Cle) {
                     g.setColor(new Color(230, 180, 20));

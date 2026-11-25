@@ -59,4 +59,5 @@ public class Souris extends Personnage {
     public int getCles() {
         return nombreclé;
     }
+
 }
